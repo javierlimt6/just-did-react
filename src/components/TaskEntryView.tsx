@@ -3,6 +3,7 @@ import { SparklesIcon, ClockIcon, DocumentTextIcon } from '@heroicons/react/24/o
 import Confetti from 'react-confetti'
 import { useAppStore } from '@/store'
 import type { BrowserHistoryItem } from '@/types'
+import { generateAISuggestion } from '@/utils/ai'
 
 const TaskEntryView = () => {
   const { 
@@ -42,44 +43,15 @@ const TaskEntryView = () => {
     }
   }
 
-  const generateAISuggestion = () => {
+  const generateSuggestion = () => {
     setIsGeneratingSuggestion(true)
 
-    // Simple AI suggestion based on browser history and common patterns
-    const suggestions = [
-      'Researched and learned about new development techniques',
-      'Reviewed and organized project documentation',
-      'Analyzed data and prepared insights for upcoming decisions',
-      'Collaborated on team project and provided valuable input',
-      'Completed focused work on current priorities',
-      'Studied and absorbed new information from online resources',
-      'Organized and planned upcoming tasks and projects',
-      'Reviewed and optimized existing processes and workflows'
-    ]
-
-    // Add browser history context if available
-    if (browserHistory.length > 0) {
-      const domains = browserHistory.map(item => item.domain)
-      const uniqueDomains = [...new Set(domains)]
-
-      if (uniqueDomains.some(domain => domain.includes('github'))) {
-        suggestions.unshift('Worked on code development and reviewed GitHub repositories')
-      }
-      if (uniqueDomains.some(domain => domain.includes('stackoverflow'))) {
-        suggestions.unshift('Researched technical solutions and debugged code issues')
-      }
-      if (uniqueDomains.some(domain => domain.includes('docs') || domain.includes('documentation'))) {
-        suggestions.unshift('Read documentation and learned about new technologies')
-      }
-    }
-
     setTimeout(() => {
-      const randomSuggestion = suggestions[Math.floor(Math.random() * suggestions.length)]
-      setTask(randomSuggestion)
+      const suggestion = generateAISuggestion(browserHistory);
+      setTask(suggestion)
       setIsGeneratingSuggestion(false)
     }, 1500) // Simulate AI processing time
   }
-
   const handleSaveAndContinue = async () => {
     if (!task.trim()) {
       alert('Please describe what you accomplished!')
@@ -160,7 +132,7 @@ const TaskEntryView = () => {
               Describe your accomplishment
             </label>
             <button
-              onClick={generateAISuggestion}
+              onClick={generateSuggestion}
               disabled={isGeneratingSuggestion}
               className="btn-secondary text-xs py-1 px-2 flex items-center space-x-1 disabled:opacity-50"
             >

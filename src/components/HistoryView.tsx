@@ -70,7 +70,7 @@ const HistoryView: React.FC = () => {
 
     // Date range
     doc.setFontSize(10)
-    doc.text(`Generated on ${format(new Date(), 'yyyy-MM-dd HH:mm')}`, pageWidth / 2, yPosition, { align: 'center' })
+    doc.text(`Generated on ${format(new Date(), 'dd-MM-yyyy HH:mm')}`, pageWidth / 2, yPosition, { align: 'center' })
     yPosition += 20
 
     // Activity entries
