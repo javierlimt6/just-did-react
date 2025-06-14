@@ -1,0 +1,46 @@
+# System files
+.DS_Store
+Thumbs.db
+.cache
+.fseventsd
+.DocumentRevisions*
+.TemporaryItems
+.Trashes
+
+# Logs and errors
+*.log
+*.err
+
+# Dependency directories
+node_modules
+
+# Build outputs
+dist
+tmp
+out-tsc
+
+# IDE/editor settings
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Miscellaneous
+.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+/scripts
