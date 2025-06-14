@@ -1,6 +1,6 @@
 # JustDid Chrome Extension
 
-A modern productivity Chrome extension built with React, TypeScript, and Vite. Stay mindful of your activities with gentle, customizable prompts to log what you've accomplished.
+A modern productivity Chrome extension built with React, TypeScript, Vite, supported via GenAI. Stay mindful of your activities with gentle, customizable prompts at regular intervals to log your tasks.
 
 ## 🚀 Features
 
