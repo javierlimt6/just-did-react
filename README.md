@@ -1,4 +1,4 @@
-# JustDid Chrome Extension - React Refactor
+# JustDid Chrome Extension
 
 A modern productivity Chrome extension built with React, TypeScript, and Vite. Stay mindful of your activities with gentle, customizable prompts to log what you've accomplished.
 
@@ -30,7 +30,7 @@ A modern productivity Chrome extension built with React, TypeScript, and Vite. S
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/javierlimt6/just-did.git
+   git clone https://github.com/javierlimt6/just-did-react.git
    cd just-did
    ```
 
@@ -39,9 +39,11 @@ A modern productivity Chrome extension built with React, TypeScript, and Vite. S
    npm install
    ```
 
-3. **Start development server**
+3. **Start development server/build**
    ```bash
-   npm run dev
+   npm run dev (for development server)
+   OR
+   npm run build (for staging)
    ```
 
 4. **Load extension in Chrome**
@@ -49,32 +51,27 @@ A modern productivity Chrome extension built with React, TypeScript, and Vite. S
    - Enable "Developer mode"
    - Click "Load unpacked" and select the `dist` directory
 
-### Production Build
-
-```bash
-npm run build
-```
-
 ## 🏗️ Project Structure
 
+(May change over time)
+
 ```
-src/
-├── components/           # React components
-│   ├── LandingView.tsx   # Timer setup and start screen
-│   ├── TimerView.tsx     # Active timer display
-│   ├── TaskEntryView.tsx # Activity logging after timer
-│   └── HistoryView.tsx   # Activity history and export
-├── background/           # Chrome extension background script
-│   └── background.ts     # Service worker for timers and notifications
-├── store/               # Zustand state management
-│   └── store.ts         # Global application state
-├── types/               # TypeScript type definitions
-│   └── types.ts         # Extension-specific types
-├── manifest.ts          # Chrome extension manifest configuration
-├── App.tsx              # Main React application component
-├── popup.tsx            # Extension popup entry point
-├── popup.html           # HTML template for popup
-└── index.css            # Global styles with Tailwind
+just-did-react/
+├── background/
+│   └── background.ts       # Chrome extension background script
+├── src/
+│   ├── components/
+│   │   ├── LandingView.tsx      # Timer setup and start screen
+│   │   ├── TimerView.tsx        # Active timer display
+│   │   ├── TaskEntryView.tsx    # Activity logging after timer
+│   │   └── HistoryView.tsx      # Activity history and export
+│   ├── store/
+│   │   └── store.ts             # Global app state with Zustand
+│   ├── types/
+│   │   └── types.ts             # Shared TS types
+│   ├── App.tsx                  # Main React component
+│   ├── popup.tsx                # Extension popup entry
+│   ├── popup.html               # Popup’s HTML template
 ```
 
 ## 🎯 Usage
@@ -194,7 +191,6 @@ This project is licensed under the GPL-3.0 License - see the [LICENSE](LICENSE) 
 
 ## 🙏 Acknowledgments
 
-- Original vanilla JS implementation
 - Chrome Extension community
 - React and Vite teams
 - Contributors and testers
