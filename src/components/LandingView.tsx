@@ -3,6 +3,7 @@ import { ClockIcon, DocumentTextIcon } from '@heroicons/react/24/outline'
 import { useAppStore } from '@/store'
 import { TIMER_CONSTRAINTS } from '@/types'
 import { Field, NumberInput } from '@chakra-ui/react';
+import { ValueChangeDetails } from 'node_modules/@ark-ui/react/dist/components/number-input/number-input';
 
 const LandingView = () => {
   const { startTimer, setCurrentView } = useAppStore()
@@ -30,8 +31,8 @@ const LandingView = () => {
     setCurrentView('history')
   }
 
-  const handleDurationChange = (details: { value: string }) => {
-    const value = parseInt(details.value)
+  const handleDurationChange = (e: ValueChangeDetails) => {
+    const value = parseInt(e.value);
     if (!isNaN(value)) {
       setDuration(Math.max(TIMER_CONSTRAINTS.MIN_DURATION, Math.min(TIMER_CONSTRAINTS.MAX_DURATION, value)))
     }
@@ -81,8 +82,6 @@ const LandingView = () => {
         <Field.Label>Focus Interval</Field.Label>
           <NumberInput.Root width="100%"
           defaultValue={TIMER_CONSTRAINTS.DEFAULT_DURATION.toString()}
-          min={TIMER_CONSTRAINTS.MAX_DURATION}
-          max={TIMER_CONSTRAINTS.MIN_DURATION}
           value={duration.toString()}
           onValueChange={(e) => handleDurationChange(e)}>
             <NumberInput.Control />
@@ -97,6 +96,12 @@ const LandingView = () => {
         <button
           onClick={handleStartTimer}
           disabled={isStarting}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleStartTimer();
+            }
+          }}
           className="btn-primary flex items-center justify-center space-x-2 flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <ClockIcon/>
