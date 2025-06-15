@@ -63,39 +63,42 @@ const LandingView = () => {
             onChange={handleDurationChange}
             className="w-20 h-12 text-center text-xl font-bold text-primary-600 border-2 border-gray-200 rounded-lg focus:border-primary-500 focus:outline-none transition-colors"
           />
-          <span className="text-lg font-semibold text-gray-600">minutes</span>
+          <span className="text-lg text-gray-600">minutes</span>
         </div>
 
-        <div className="text-center">
-          <button
-            onClick={handleStartTimer}
-            disabled={isStarting}
-            className="btn-primary flex items-center justify-center space-x-2 w-full disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <ClockIcon className="w-5 h-5" />
-            <span>{isStarting ? 'Starting...' : 'Start Focus Session'}</span>
-          </button>
-        </div>
+        
       </div>
 
       {/* Action Buttons */}
-      <div className="space-y-3">
-        <button
-          onClick={handleShowHistory}
-          className="btn-secondary flex items-center justify-center space-x-2 w-full"
-        >
-          <DocumentTextIcon className="w-5 h-5" />
-          <span>View Activity History</span>
-        </button>
+      <div className="flex items-center space-x-4 mt-6">
+        <div className="text-center space-y-3">
+            <button
+              onClick={handleStartTimer}
+              disabled={isStarting}
+              className="btn-primary flex items-center justify-center space-x-2 w-full disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ClockIcon className="inline-block" />
+              <span>{isStarting ? 'Starting...' : 'Start Focus Session'}</span>
+            </button>
+          </div>
+        
+        <div className="text-center space-y-3">
+          <button
+            onClick={handleShowHistory}
+            className="btn-secondary flex items-center justify-center space-x-2 w-full"
+          >
+            <DocumentTextIcon className="inline-block" />
+            <span>View Activity History</span>
+          </button>   
+        </div>
       </div>
-
       {/* Quick Tips */}
       <div className="glass-card p-4 mt-6 bg-white/80">
         <h3 className="font-semibold text-gray-700 mb-2 text-sm">💡 Quick Tips</h3>
         <ul className="text-xs text-gray-600 space-y-1">
-          <li>• Choose a realistic focus duration</li>
-          <li>• Minimize distractions before starting</li>
-          <li>• Log your accomplishments when the timer ends</li>
+          <li>Choose a realistic focus duration</li>
+          <li>Minimize distractions before starting</li>
+          <li>Log your accomplishments when the timer ends</li>
         </ul>
       </div>
     </div>

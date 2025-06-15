@@ -1,8 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap');
 html, body, #root {
-  width: 400px;    /* or your preferred width, max 800px */
-  height: 500px;   /* or your preferred height, max 600px */
-  min-width: 400px;
-  min-height: 500px;
+  max-width: 400px;    /* or your preferred width, max 800px */
+  max-height: 500px;
+  min-width: 80vh;   /* or your preferred width, min 320px */
+  width: auto;
+  height: fit-content;   /* or your preferred height, max 600px */
+  min-height: 0;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -47,10 +50,7 @@ html, body, #root {
   --color-info-rgb: 98, 108, 113;
 
   /* Typography */
-  --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-family-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo,
-    Monaco, Consolas, monospace;
+  font-family: 'Satoshi', sans-serif;
   --font-size-xs: 11px;
   --font-size-sm: 12px;
   --font-size-base: 14px;
