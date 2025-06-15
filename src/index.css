@@ -401,9 +401,7 @@ pre code {
 }
 
 /* Shrink SVGs inside all btn- classes */
-.btn-primary svg,
-.btn-secondary svg,
-.btn-danger svg {
+.btn svg {
   width: 3em;  
   height: 3em;
   vertical-align: middle;

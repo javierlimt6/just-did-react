@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { ClockIcon, DocumentTextIcon } from '@heroicons/react/24/outline'
 import { useAppStore } from '@/store'
 import { TIMER_CONSTRAINTS } from '@/types'
-import { Field, NumberInput } from '@chakra-ui/react';
+import { Button, HStack, Field, NumberInput } from '@chakra-ui/react';
 import { ValueChangeDetails } from 'node_modules/@ark-ui/react/dist/components/number-input/number-input';
 
 const LandingView = () => {
@@ -92,29 +92,27 @@ const LandingView = () => {
       </div>
 
       {/* Action Buttons */}
-      <div className="glass-card w-full p-4 mt-6 flex gap-4">
-        <button
+      <div className="glass-card w-full p-4 mt-6 flex gap-4 items-center">
+        <HStack>
+          <Button 
           onClick={handleStartTimer}
           disabled={isStarting}
           onKeyDown={(e) => {
+            console.log(e.key)
             if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              handleStartTimer();
+              console.log('Enter key pressed')
+              e.preventDefault()
+              handleStartTimer()
             }
           }}
-          className="btn-primary flex items-center justify-center space-x-2 flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <ClockIcon/>
-          <span>{isStarting ? 'Starting...' : 'Start Focus Session'}</span>
-        </button>
-
-        <button
-          onClick={() => handleShowHistory()}
-          className="btn-secondary flex items-center justify-center space-x-2 flex-1"
-        >
-          <DocumentTextIcon/>
-          <span>View Activity History</span>
-        </button>
+          colorPalette="teal" variant="solid">
+            <ClockIcon /> {isStarting ? 'Starting...' : 'Start Focus Session'}
+          </Button>
+          <Button colorPalette="teal" variant="surface" onClick={() => handleShowHistory()}>
+            View Activity History <DocumentTextIcon />
+          </Button>
+        </HStack>
+    
       </div>
       {/* Quick Tips */}
       <div className="glass-card p-4 mt-6 bg-white/80">
