@@ -9,6 +9,7 @@ import { format } from 'date-fns'
 import jsPDF from 'jspdf'
 import { useAppStore } from '@/store'
 import type { ActivityLog, ExportFormat } from '@/types'
+import { Button, HStack, IconButton, DataList, Stat } from '@chakra-ui/react'
 
 const HistoryView = () => {
   const { logs, setCurrentView, clearActivityLogs } = useAppStore()
@@ -137,7 +138,7 @@ const HistoryView = () => {
   }
 
   const handleClearLogs = () => {
-    if (confirm('Are you sure you want to clear all activity logs? This action cannot be undone.')) {
+    if (confirm('Are you sure you want to clear all your tasks? This action cannot be undone.')) {
       clearActivityLogs()
     }
   }
@@ -146,25 +147,41 @@ const HistoryView = () => {
     return logs.reduce((total, log) => total + log.duration, 0) / 60
   }
 
+
+  const data = [
+    { label: 'Total Tasks', value: logs.length },
+    { label: 'Total Focus Time', value: `${getTotalHours().toFixed(1)} hours` }
+  ]
   return (
     <div className="animate-fade-in">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <button
-          onClick={handleBack}
-          className="btn-secondary flex items-center space-x-2 py-2 px-3"
-        >
-          <ArrowLeftIcon className="w-4 h-4" />
-          <span>Back</span>
-        </button>
 
-        <h1 className="text-xl font-bold text-white">Activity History</h1>
+        <IconButton onClick={handleBack} variant="surface">
+          <ArrowLeftIcon />
+        </IconButton>
+
+        <h2 className="text-xl font-bold text-white">Your Tasks</h2>
 
         <div className="w-16"></div> {/* Spacer for alignment */}
       </div>
 
       {/* Stats */}
       <div className="glass-card p-4 mb-6">
+      <HStack justifyContent="space-between" className="mb-4">
+      {/* <DataList.Root variant="bold" size="lg"> */}
+        {data.map((item) => (
+          <Stat.Root key={item.label}>
+            <Stat.Label>{item.label}</Stat.Label>
+            <Stat.ValueText alignItems="baseline">
+              {item.value}
+            </Stat.ValueText>
+          </Stat.Root>
+        ))}
+      {/* </DataList.Root> */}
+      </HStack>
+      </div>
+      {/* <div className="glass-card p-4 mb-6">
         <div className="grid grid-cols-2 gap-4 text-center">
           <div>
             <div className="text-2xl font-bold text-primary-600">{logs.length}</div>
@@ -175,23 +192,28 @@ const HistoryView = () => {
             <div className="text-sm text-gray-600">Total Focus</div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Export Buttons */}
       <div className="glass-card p-4 mb-6">
-        <h3 className="font-semibold text-gray-700 mb-3 text-sm">Export Data</h3>
-        <div className="grid grid-cols-3 gap-2">
+        <h3 className="font-semibold text-gray-700 mb-6 text-sm">Export Data</h3>
+        <div className="grid grid-cols-3 mt-4">
+          <HStack>
           {(['json', 'csv', 'pdf'] as ExportFormat[]).map((format) => (
-            <button
+            <Button
               key={format}
               onClick={() => handleExport(format)}
               disabled={isExporting === format || logs.length === 0}
-              className="btn-secondary text-xs py-2 px-3 flex items-center justify-center space-x-1 disabled:opacity-50"
+              loading={isExporting === format}
+              loadingText={format.toUpperCase()}
+              size="sm"
+              variant="surface"
             >
-              <DocumentArrowDownIcon className="w-3 h-3" />
-              <span>{isExporting === format ? '...' : format.toUpperCase()}</span>
-            </button>
+              <DocumentArrowDownIcon/>
+              {format.toUpperCase()}
+            </Button>
           ))}
+          </HStack>
         </div>
       </div>
 
@@ -215,13 +237,15 @@ const HistoryView = () => {
       {/* Clear All Button */}
       {logs.length > 0 && (
         <div className="mt-4 text-center">
-          <button
+          <Button
             onClick={handleClearLogs}
-            className="text-danger-500 hover:text-danger-600 text-sm font-medium flex items-center space-x-1 mx-auto transition-colors"
+            colorPalette="red"
+            variant="subtle"
+            size="sm"
+            aria-label="Clear all tasks"
           >
-            <TrashIcon className="w-4 h-4" />
-            <span>Clear All Logs</span>
-          </button>
+            <TrashIcon className="w-4 h-4" /> Clear All Tasks
+          </Button>
         </div>
       )}
     </div>

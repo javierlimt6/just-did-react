@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { StopIcon } from '@heroicons/react/24/outline'
 import { useAppStore } from '@/store'
+import { HStack, IconButton, Progress } from '@chakra-ui/react'
 
 const TimerView = () => {
   const { timerState, stopTimer, setCurrentView, sendChromeMessage, updateTimerRemaining } = useAppStore()
@@ -84,33 +85,40 @@ const TimerView = () => {
       {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-2xl font-bold mb-2 text-white">
-          Focus Session Active
+          Focus Session
         </h1>
       </div>
 
       {/* Timer Display */}
+      
       <div className="glass-card p-8 mb-6 text-center">
+        <HStack justify="space-between">
         <div className="timer-display mb-6">
           {formatTime(timeRemaining)}
         </div>
 
-        {/* Progress Bar */}
-        {/* <div className="progress-bar mb-6">
-          <div 
-            className="progress-fill"
-            style={{ width: `${getProgress()}%` }}
-          />
-        </div> */}
-
-
-
-        <button
+        {/* Progress Bar  */}
+        <Progress.Root
+          value={getProgress()}
+          size="xl"
+          colorScheme="teal"
+          className="w-full mb-4"/>
+        {/* <button
           onClick={handleStopTimer}
           className="btn-danger flex items-center justify-center space-x-2 mx-auto"
         >
           <StopIcon className="w-4 h-4" />
           <span>Stop Session</span>
-        </button>
+        </button> */}
+
+        <IconButton aria-label="Stop session"
+        colorPalette="red"
+        variant="solid"
+        onClick={handleStopTimer}
+        >
+            <StopIcon />
+        </IconButton>
+        </HStack>
       </div>
 
       {/* Motivation */}

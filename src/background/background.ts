@@ -149,14 +149,8 @@ chrome.alarms.onAlarm.addListener((alarm) => {
       buttons: [{ title: 'Log Activity' }]
     });
     // Force open popup window
-    chrome.action.openPopup().catch(() => {
-      chrome.windows.create({
-        url: chrome.runtime.getURL('src/popup.html?view=taskEntry'),
-        type: 'popup',
-        focused: true,
-        width: 320,
-        height: 480
-      });
+    chrome.action.openPopup().catch((e) => {
+      console.error('Error opening popup:', e);
     });
   }
 })

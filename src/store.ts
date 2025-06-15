@@ -137,7 +137,7 @@ export const useAppStore = create<AppStore>()(
         partialize: (state) => ({
           logs: state.logs,
           timerState: {
-            duration: state.timerState.duration
+            duration: state.timerState.duration,
           }
         })
       }
