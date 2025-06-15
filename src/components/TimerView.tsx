@@ -86,9 +86,6 @@ const TimerView = () => {
         <h1 className="text-2xl font-bold mb-2 text-white">
           Focus Session Active
         </h1>
-        <p className="text-blue-100 text-sm opacity-90">
-          Stay focused on your current task
-        </p>
       </div>
 
       {/* Timer Display */}
@@ -98,16 +95,14 @@ const TimerView = () => {
         </div>
 
         {/* Progress Bar */}
-        <div className="progress-bar mb-6">
+        {/* <div className="progress-bar mb-6">
           <div 
             className="progress-fill"
             style={{ width: `${getProgress()}%` }}
           />
-        </div>
+        </div> */}
 
-        <div className="text-sm text-gray-600 mb-4">
-          {timerState.duration} minute focus session
-        </div>
+
 
         <button
           onClick={handleStopTimer}

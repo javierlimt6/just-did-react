@@ -37,6 +37,7 @@ export type MessageAction =
   | 'getBrowserHistory'
   | 'getActivityLogs'
   | 'saveActivityLog'
+  | 'openTaskEntry'
 
 export interface ChromeMessage {
   action: MessageAction

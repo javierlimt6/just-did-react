@@ -10,7 +10,7 @@ import jsPDF from 'jspdf'
 import { useAppStore } from '@/store'
 import type { ActivityLog, ExportFormat } from '@/types'
 
-const HistoryView: React.FC = () => {
+const HistoryView = () => {
   const { logs, setCurrentView, clearActivityLogs } = useAppStore()
   const [isExporting, setIsExporting] = useState<ExportFormat | null>(null)
 

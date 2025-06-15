@@ -52,6 +52,26 @@ chrome.runtime.onMessage.addListener((
       getBrowserHistory(message.data?.minutes || 15, sendResponse)
       return true // Keep message channel open for async response
 
+    case 'openTaskEntry':
+      // close any leftover popups first
+      chrome.windows.getAll({}, (wins) => {
+        const removals = wins
+          .filter(w => w.type === 'popup')
+          .map(w => chrome.windows.remove(w.id!))
+        // once all are removed, open the TaskEntry popup
+        Promise.all(removals).finally(() => {
+          chrome.windows.create({
+            url: chrome.runtime.getURL('src/popup.html?view=taskEntry'),
+            type: 'popup',
+            width: 320,
+            height: 480,
+            focused: true
+          })
+        })
+      })
+      sendResponse({ success: true })
+      break
+
     default:
       sendResponse({ success: false, error: 'Unknown action' })
   }
@@ -127,24 +147,17 @@ chrome.alarms.onAlarm.addListener((alarm) => {
       title: 'JustDid - Time to Log!',
       message: 'What did you just accomplish? Click to log your activity.',
       buttons: [{ title: 'Log Activity' }]
-    })
-    
-    chrome.windows.getAll({}, (windows) => {
-      windows.forEach((w) => {
-        console.log(`Closing window: ${w.id}, type: ${w.type}`)
-        if (w.type === 'popup') {
-          chrome.windows.remove(w.id);
-        }
-      });
     });
     // Force open popup window
-    chrome.windows.create({
-      url: 'src/popup.html',
-      type: 'popup',
-      focused: true,
-      width: 320,
-      height: 480
-    })
+    chrome.action.openPopup().catch(() => {
+      chrome.windows.create({
+        url: chrome.runtime.getURL('src/popup.html?view=taskEntry'),
+        type: 'popup',
+        focused: true,
+        width: 320,
+        height: 480
+      });
+    });
   }
 })
 

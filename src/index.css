@@ -1,3 +1,13 @@
+html, body, #root {
+  width: 400px;    /* or your preferred width, max 800px */
+  height: 500px;   /* or your preferred height, max 600px */
+  min-width: 400px;
+  min-height: 500px;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 
 :root {
   /* Colors */
