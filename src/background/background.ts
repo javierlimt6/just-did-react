@@ -128,14 +128,22 @@ chrome.alarms.onAlarm.addListener((alarm) => {
       message: 'What did you just accomplish? Click to log your activity.',
       buttons: [{ title: 'Log Activity' }]
     })
-
+    
+    chrome.windows.getAll({}, (windows) => {
+      windows.forEach((w) => {
+        console.log(`Closing window: ${w.id}, type: ${w.type}`)
+        if (w.type === 'popup') {
+          chrome.windows.remove(w.id);
+        }
+      });
+    });
     // Force open popup window
     chrome.windows.create({
       url: 'src/popup.html',
       type: 'popup',
       focused: true,
-      width: 400,
-      height: 600
+      width: 320,
+      height: 480
     })
   }
 })
@@ -168,8 +176,15 @@ async function getBrowserHistory(
       maxResults: 50
     })
 
+    const historyWithoutExtensions = historyItems.filter(item => {
+      !item.url.includes('chrome-extension://') &&
+      !item.url.includes('chrome://') &&
+      !item.url.includes('about:') &&
+      !item.url.includes('lnahgngcehjfhnngogjpemhpooebkike')
+    }) // rejecting extension urls
+
     // Filter and format history items
-    const formattedHistory: BrowserHistoryItem[] = historyItems
+    const formattedHistory: BrowserHistoryItem[] = historyWithoutExtensions
       .filter(item => item.visitCount && item.visitCount > 0)
       .sort((a, b) => (b.lastVisitTime || 0) - (a.lastVisitTime || 0))
       .slice(0, 10)

@@ -20,6 +20,7 @@ const TimerView = () => {
             updateTimerRemaining(remaining)
 
             if (remaining <= 0) {
+              window.close() // Close the popup when timer ends
               setCurrentView('task-entry')
               return
             }
@@ -124,7 +125,7 @@ const TimerView = () => {
             🧠 Stay Focused
           </p>
           <p className="text-xs text-gray-600">
-            Minimize distractions and concentrate on your task. You're making great progress!
+            Your timer is still running, come back later!
           </p>
         </div>
       </div>

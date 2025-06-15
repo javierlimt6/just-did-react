@@ -18,6 +18,7 @@ const LandingView = () => {
     try {
       await startTimer(duration)
       // The store will handle view change
+      window.close();   // Close the popup after starting the timer
     } catch (error) {
       console.error('Error starting timer:', error)
       setIsStarting(false)

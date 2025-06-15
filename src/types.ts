@@ -56,7 +56,8 @@ export type ExportFormat = 'json' | 'csv' | 'pdf'
 export const TIMER_CONSTRAINTS = {
   MIN_DURATION: 1,
   MAX_DURATION: 60,
-  DEFAULT_DURATION: 15
+  DEFAULT_DURATION: 15,
+  DEBUG_ID: 24
 } as const
 
 // Storage keys
