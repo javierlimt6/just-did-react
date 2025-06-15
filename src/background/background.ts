@@ -55,19 +55,19 @@ chrome.runtime.onMessage.addListener((
     case 'openTaskEntry':
       // close any leftover popups first
       chrome.windows.getAll({}, (wins) => {
-        const removals = wins
+        wins
           .filter(w => w.type === 'popup')
           .map(w => chrome.windows.remove(w.id!))
         // once all are removed, open the TaskEntry popup
-        Promise.all(removals).finally(() => {
-          chrome.windows.create({
-            url: chrome.runtime.getURL('src/popup.html?view=taskEntry'),
-            type: 'popup',
-            width: 320,
-            height: 480,
-            focused: true
-          })
-        })
+        // chrome.action.openPopup().catch(() => {
+        //   chrome.windows.create({
+        //     url: chrome.runtime.getURL('src/popup.html?view=taskEntry'),
+        //     type: 'popup',
+        //     focused: true,
+        //     width: 320,
+        //     height: 480
+        //   });
+        // });
       })
       sendResponse({ success: true })
       break

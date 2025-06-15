@@ -1,14 +1,17 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap');
+
 html, body, #root {
-  max-width: 400px;    /* or your preferred width, max 800px */
-  max-height: 500px;
-  min-width: 80vh;   /* or your preferred width, min 320px */
-  width: auto;
-  height: fit-content;   /* or your preferred height, max 600px */
-  min-height: 0;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  width: fit-content;
+  height: fit-content;
+  max-width: 600px;
+  max-height: 800px;
+  min-width: 320px;
+  /* min-height: 480px; */
+  /* make sure Chrome measures your content exactly */
+  display: inline-block;
 }
 
 
@@ -50,7 +53,7 @@ html, body, #root {
   --color-info-rgb: 98, 108, 113;
 
   /* Typography */
-  font-family: 'Satoshi', sans-serif;
+  font-family: 'Manrope', sans-serif;
   --font-size-xs: 11px;
   --font-size-sm: 12px;
   --font-size-base: 14px;
@@ -395,6 +398,15 @@ pre code {
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Shrink SVGs inside all btn- classes */
+.btn-primary svg,
+.btn-secondary svg,
+.btn-danger svg {
+  width: 3em;  
+  height: 3em;
+  vertical-align: middle;
 }
 
 /* Form elements */
@@ -870,4 +882,26 @@ body {
   .timer-display {
     font-size: var(--font-size-3xl);
   }
+}
+
+.number-input{
+    /* size=sm, isDisabled=false, isReadOnly=false
+
+  You may find the Number Input in several presentations, either as an Input, or a Label with increment and decrement buttons next to it. This component requires that the user less effort than selecting the input field, tapping the digit “2” on the keypad, and hitting Enter or dismissing the keyboard. For example, to increase the number of guests from 1 to 2 in a form, the user only needs one tap on the plus button.
+  */
+
+  /* Auto layout */
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  gap: 4px;
+
+  position: absolute;
+  width: 123px;
+  height: 35px;
+  left: 45px;
+  top: 20px;
+
 }

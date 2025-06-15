@@ -116,12 +116,12 @@ const TimerView = () => {
       {/* Motivation */}
       <div className="glass-card p-4 bg-white/80">
         <div className="text-center">
-          <p className="text-sm text-gray-700 font-medium mb-2">
+          <span className="text-sm text-gray-700 font-medium mb-2">
             🧠 Stay Focused
-          </p>
-          <p className="text-xs text-gray-600">
+          </span><br/>
+          <span className="text-xs text-gray-600">
             Your timer is still running, come back later!
-          </p>
+          </span>
         </div>
       </div>
     </div>
