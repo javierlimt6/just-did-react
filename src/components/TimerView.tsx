@@ -66,10 +66,11 @@ const TimerView = () => {
   }
 
   const getProgress = () => {
-    if (!timerState.duration || !timerState.startTime) return 0
+    if (!timerState.duration) return 0
     const totalMs = timerState.duration * 60 * 1000
     const elapsed = totalMs - timeRemaining
-    return Math.min(100, Math.max(0, (elapsed / totalMs) * 100))
+    const percent = (elapsed / totalMs) * 100
+    return Math.min(100, Math.max(0, percent));
   }
 
   if (!isLoaded) {
@@ -98,11 +99,7 @@ const TimerView = () => {
         </div>
 
         {/* Progress Bar  */}
-        <Progress.Root
-          value={getProgress()}
-          size="xl"
-          colorScheme="teal"
-          className="w-full mb-4"/>
+      <Progress.Root value={getProgress()} colorPalette="teal" /> 
         {/* <button
           onClick={handleStopTimer}
           className="btn-danger flex items-center justify-center space-x-2 mx-auto"

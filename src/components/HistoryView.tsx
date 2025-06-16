@@ -3,13 +3,14 @@ import {
   ArrowLeftIcon, 
   DocumentArrowDownIcon, 
   TrashIcon,
-  ClockIcon 
+  ClockIcon,
+  DocumentMagnifyingGlassIcon 
 } from '@heroicons/react/24/outline'
 import { format } from 'date-fns'
 import jsPDF from 'jspdf'
 import { useAppStore } from '@/store'
 import type { ActivityLog, ExportFormat } from '@/types'
-import { Button, HStack, IconButton, DataList, Stat } from '@chakra-ui/react'
+import { Button, HStack, IconButton, Collapsible, Stat, Box, Dialog, CloseButton, Portal } from '@chakra-ui/react'
 
 const HistoryView = () => {
   const { logs, setCurrentView, clearActivityLogs } = useAppStore()
@@ -137,12 +138,6 @@ const HistoryView = () => {
     }
   }
 
-  const handleClearLogs = () => {
-    if (confirm('Are you sure you want to clear all your tasks? This action cannot be undone.')) {
-      clearActivityLogs()
-    }
-  }
-
   const getTotalHours = () => {
     return logs.reduce((total, log) => total + log.duration, 0) / 60
   }
@@ -196,7 +191,7 @@ const HistoryView = () => {
 
       {/* Export Buttons */}
       <div className="glass-card p-4 mb-6">
-        <h3 className="font-semibold text-gray-700 mb-6 text-sm">Export Data</h3>
+        <h3 className="font-semibold text-gray-700 mb-6 text-sm">Export</h3>
         <div className="grid grid-cols-3 mt-4">
           <HStack>
           {(['json', 'csv', 'pdf'] as ExportFormat[]).map((format) => (
@@ -219,33 +214,71 @@ const HistoryView = () => {
 
       {/* Activity Log */}
       <div className="glass-card overflow-hidden">
-        {logs.length === 0 ? (
-          <div className="p-8 text-center">
-            <ClockIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500 mb-2">No activities logged yet</p>
-            <p className="text-sm text-gray-400">Start your first focus session to see your accomplishments here!</p>
-          </div>
-        ) : (
-          <div className="max-h-64 overflow-y-auto">
-            {logs.map((log) => (
-              <ActivityLogEntry key={log.id} log={log} />
-            ))}
-          </div>
-        )}
+        <Collapsible.Root unmountOnExit>
+          <Collapsible.Trigger paddingY="3">
+            <h3 className="font-semibold text-gray-700">View Task History</h3>
+          </Collapsible.Trigger>
+          <Collapsible.Content>
+            <Box padding="4" borderWidth="1px">
+              {logs.length === 0 ? (
+                <div className="p-8 text-center">
+                  <ClockIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                  <p className="text-gray-500 mb-2">No activities logged yet</p>
+                  <p className="text-sm text-gray-400">Start your first focus session to see your accomplishments here!</p>
+                </div>
+              ) : (
+                <div className="max-h-64 overflow-y-auto">
+                  {logs.map((log) => (
+                    <ActivityLogEntry key={log.id} log={log} />
+                  ))}
+                </div>
+              )}
+            </Box>
+          </Collapsible.Content>
+        </Collapsible.Root>
+        
       </div>
 
       {/* Clear All Button */}
       {logs.length > 0 && (
         <div className="mt-4 text-center">
-          <Button
-            onClick={handleClearLogs}
-            colorPalette="red"
-            variant="subtle"
-            size="sm"
-            aria-label="Clear all tasks"
-          >
-            <TrashIcon className="w-4 h-4" /> Clear All Tasks
-          </Button>
+          <Dialog.Root>
+            <Dialog.Trigger asChild>
+              <Button variant="solid" colorPalette="red" size="sm">
+                Delete All Tasks
+              </Button>
+            </Dialog.Trigger>
+            <Portal>
+              <Dialog.Backdrop />
+              <Dialog.Positioner>
+                <Dialog.Content bg="black" color="white" maxWidth="sm" width="90%">
+                  <Dialog.Header>
+                    <Dialog.Title>Confirm Delete</Dialog.Title>
+                  </Dialog.Header>
+                  <Dialog.Body>
+                    <p>
+                      Are you sure you want to delete your task history? This is irreversible.
+                    </p>
+                  </Dialog.Body>
+                  <Dialog.Footer>
+                    <Button
+                      onClick={clearActivityLogs}
+                      colorPalette="red"
+                      variant="subtle"
+                      size="sm"
+                      aria-label="Clear all tasks"
+                    >
+                      <TrashIcon /> Confirm
+                    </Button>
+                  </Dialog.Footer>
+                  <Dialog.CloseTrigger asChild>
+                    <CloseButton size="sm" />
+                  </Dialog.CloseTrigger>
+                </Dialog.Content>
+              </Dialog.Positioner>
+            </Portal>
+          </Dialog.Root>
+          
         </div>
       )}
     </div>

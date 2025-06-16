@@ -20,8 +20,12 @@ const LandingView = () => {
     }
     // console.log('Starting timer with duration:', duration)
     setIsStarting(true)
+    let newDuration = duration;
     try {
-      await startTimer(duration)
+      if (duration == TIMER_CONSTRAINTS.DEBUG_ID) {
+        newDuration = 0;
+      }
+      await startTimer(newDuration)
       // The store will handle view change
       window.close();  // Close the popup after starting the timer
     } catch (error) {

@@ -8,6 +8,7 @@ import Confetti from "react-confetti";
 import { useAppStore } from "@/store";
 import type { BrowserHistoryItem } from "@/types";
 import { generateAISuggestion } from "@/utils/ai";
+import { Button, Field, HStack, Textarea } from "@chakra-ui/react";
 
 const TaskEntryView = () => {
   const {
@@ -39,9 +40,11 @@ const TaskEntryView = () => {
 
   const loadBrowserHistory = async () => {
     try {
+      console.log("Loading browser history...", timerState.duration);
       const response = await sendChromeMessage("getBrowserHistory", {
         minutes: timerState.duration || 15,
       });
+      console.log("Browser history response:", response);
       if (response.success) {
         setBrowserHistoryLocal(response.data);
         setBrowserHistory(response.data);
@@ -124,7 +127,6 @@ const TaskEntryView = () => {
 
       {/* Header Section - Now properly isolated */}
       <div className="text-center mb-6">
-        <div className="text-4xl mb-2">ðŸŽ‰</div>
         <h1 className="text-2xl font-bold mb-2 text-white">Great Work!</h1>
         <p className="text-blue-100 text-sm opacity-90">
           What did you just accomplish?
@@ -134,54 +136,44 @@ const TaskEntryView = () => {
       {/* Main Content Area */}
       <div className="space-y-4">
         {/* Task Entry Form */}
-        <div className="glass-card p-6">
+        <div className="glass-card p-4">
           <div className="mb-4">
             <div className="flex items-center justify-between mb-2">
-              <label className="block text-gray-700 font-semibold text-sm">
-                Describe your accomplishment
-              </label>
-              <button
-                onClick={generateSuggestion}
-                disabled={isGeneratingSuggestion}
-                className="btn-secondary text-xs py-1 px-3 flex items-center space-x-1 disabled:opacity-50 rounded-md"
-              >
-                <SparklesIcon className="w-3 h-3" />
-                <span>
-                  {isGeneratingSuggestion ? "Thinking..." : "AI Suggest"}
-                </span>
-              </button>
             </div>
-
-            <textarea
-              value={task}
-              onChange={(e) => setTask(e.target.value)}
-              placeholder="Generate AI suggestions or describe your task here"
-              className="input-field h-24 resize-none"
-              disabled={isLoading}
-            />
+            <Field.Root>
+              <HStack justifyContent="space-around" className="mb-2">
+                <Field.Label>Task Description</Field.Label>
+                <Button 
+                  onClick={generateSuggestion}
+                  disabled={isGeneratingSuggestion}
+                  colorPalette="teal" variant="subtle">
+                    <SparklesIcon /> {isGeneratingSuggestion ? "Thinking..." : "Suggest"}
+                </Button>
+              </HStack>
+              <Textarea value={task}
+                onChange={(e) => setTask(e.target.value)}
+                disabled={isLoading}
+                placeholder="Click the button for AI suggestions"
+                variant="outline"
+              />
+              <Field.HelperText>Use a few words</Field.HelperText>
+            </Field.Root>
           </div>
-
+          </div>
+          <div className="glass-card w-full p-4 mt-6 flex gap-4 items-center">
           {/* Action Buttons - Improved proportions */}
           <div className="flex flex-col sm:flex-row gap-3">
-            <button
+            <HStack>
+              <Button 
               onClick={handleSaveAndContinue}
               disabled={isLoading || !task.trim()}
-              className="btn-primary flex-1 flex items-center justify-center space-x-2 disabled:opacity-50 py-3 px-4 rounded-lg font-medium"
-            >
-              <ClockIcon className="w-4 h-4" />
-              <span>
-                {isLoading ? "Saving..." : "Save & Start New Session"}
-              </span>
-            </button>
-
-            <button
-              onClick={handleSaveAndViewHistory}
-              disabled={isLoading || !task.trim()}
-              className="btn-secondary flex-1 flex items-center justify-center space-x-2 disabled:opacity-50 py-3 px-4 rounded-lg font-medium"
-            >
-              <DocumentTextIcon className="w-4 h-4" />
-              <span>Save & View History</span>
-            </button>
+              colorPalette="teal" variant="solid">
+                <ClockIcon /> {isLoading ? "Saving..." : "Save & Start New Session"}
+              </Button>
+              <Button colorPalette="teal" variant="surface" onClick={() => handleSaveAndViewHistory()}>
+                Save & View History <DocumentTextIcon />
+              </Button>
+            </HStack>
           </div>
         </div>
 
@@ -189,7 +181,7 @@ const TaskEntryView = () => {
         {browserHistory.length > 0 && (
           <div className="glass-card p-4 bg-white/80">
             <h3 className="font-semibold text-gray-700 mb-2 text-sm">
-              ðŸ“± Recent Activity Context
+              Recent Browser History
             </h3>
             <div className="space-y-2 max-h-32 overflow-y-auto">
               {browserHistory.slice(0, 3).map((item, index) => (

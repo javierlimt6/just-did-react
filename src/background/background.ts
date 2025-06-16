@@ -49,6 +49,8 @@ chrome.runtime.onMessage.addListener((
       break
 
     case 'getBrowserHistory':
+      // Get browser history for the last X minutes
+      console.log('Fetching browser history for', message.data?.minutes || 15, 'minutes')
       getBrowserHistory(message.data?.minutes || 15, sendResponse)
       return true // Keep message channel open for async response
 
@@ -182,16 +184,9 @@ async function getBrowserHistory(
       endTime: endTime,
       maxResults: 50
     })
-
-    const historyWithoutExtensions = historyItems.filter(item => {
-      !item.url.includes('chrome-extension://') &&
-      !item.url.includes('chrome://') &&
-      !item.url.includes('about:') &&
-      !item.url.includes('lnahgngcehjfhnngogjpemhpooebkike')
-    }) // rejecting extension urls
-
+  
     // Filter and format history items
-    const formattedHistory: BrowserHistoryItem[] = historyWithoutExtensions
+    const formattedHistory: BrowserHistoryItem[] = historyItems
       .filter(item => item.visitCount && item.visitCount > 0)
       .sort((a, b) => (b.lastVisitTime || 0) - (a.lastVisitTime || 0))
       .slice(0, 10)
@@ -201,7 +196,7 @@ async function getBrowserHistory(
         visitTime: new Date(item.lastVisitTime || 0).toLocaleTimeString(),
         domain: item.url ? new URL(item.url).hostname : 'unknown'
       }))
-
+      
     callback({ 
       success: true, 
       data: formattedHistory 

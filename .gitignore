@@ -44,3 +44,5 @@ testem.log
 /typings
 
 /scripts
+
+MIGRATION-GUIDE.md
