@@ -1,6 +1,6 @@
 // navigationTracker.ts - Navigation and URL visit tracking
 
-import type { NavigationEvent, SearchQuery } from './types';
+import type { NavigationEvent, SearchQuery } from '../../types';
 import { ContextStorage } from './storage';
 
 export class NavigationTracker {

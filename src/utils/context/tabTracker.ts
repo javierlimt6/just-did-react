@@ -1,6 +1,6 @@
 // tabTracker.ts - Tab activity monitoring
 
-import type { TabEvent } from './types';
+import type { TabEvent } from '@/types';
 import { ContextStorage } from './storage';
 
 export class TabTracker {

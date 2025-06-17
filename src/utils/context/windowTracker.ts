@@ -1,6 +1,6 @@
 // windowTracker.ts - Window and focus tracking
 
-import type { WindowEvent } from './types';
+import type { WindowEvent } from '@/types';
 import { ContextStorage } from './storage';
 
 export class WindowTracker {

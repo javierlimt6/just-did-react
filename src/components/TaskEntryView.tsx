@@ -10,6 +10,7 @@ import type { BrowserHistoryItem } from "@/types";
 import { generateAISuggestion } from "@/utils/ai";
 import { Button, Field, HStack, Textarea } from "@chakra-ui/react";
 
+
 const TaskEntryView = () => {
   const {
     addActivityLog,

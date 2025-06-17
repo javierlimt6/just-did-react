@@ -1,6 +1,6 @@
 // downloadTracker.ts - Download activity tracking
 
-import type { DownloadEvent } from './types';
+import type { DownloadEvent } from '../../types';
 import { ContextStorage } from './storage';
 
 export class DownloadTracker {

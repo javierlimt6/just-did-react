@@ -11,7 +11,7 @@ import type {
   DownloadEvent,
   SearchQuery,
   FormEvent
-} from './types';
+} from '@/types';
 import { getContextTracker } from './contextTracker';
 
 interface UseContextHistoryReturn {

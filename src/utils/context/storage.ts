@@ -1,6 +1,6 @@
 // storage.ts - Local storage management for Chrome extension
 
-import type { ContextHistory, ContextTrackerConfig } from './types';
+import type { ContextHistory, ContextTrackerConfig } from '../../types';
 
 export class ContextStorage {
   private static instance: ContextStorage;
@@ -55,37 +55,37 @@ export class ContextStorage {
     }
   }
 
-  async addNavigationEvent(event: import('./types').NavigationEvent): Promise<void> {
+  async addNavigationEvent(event: import('@/types').NavigationEvent): Promise<void> {
     const history = await this.getHistory();
     history.navigation.push(event);
     await this.saveHistory(history);
   }
 
-  async addTabEvent(event: import('./types').TabEvent): Promise<void> {
+  async addTabEvent(event: import('@/types').TabEvent): Promise<void> {
     const history = await this.getHistory();
     history.tabs.push(event);
     await this.saveHistory(history);
   }
 
-  async addWindowEvent(event: import('./types').WindowEvent): Promise<void> {
+  async addWindowEvent(event: import('@/types').WindowEvent): Promise<void> {
     const history = await this.getHistory();
     history.windows.push(event);
     await this.saveHistory(history);
   }
 
-  async addDownloadEvent(event: import('./types').DownloadEvent): Promise<void> {
+  async addDownloadEvent(event: import('@/types').DownloadEvent): Promise<void> {
     const history = await this.getHistory();
     history.downloads.push(event);
     await this.saveHistory(history);
   }
 
-  async addSearchQuery(event: import('./types').SearchQuery): Promise<void> {
+  async addSearchQuery(event: import('@/types').SearchQuery): Promise<void> {
     const history = await this.getHistory();
     history.searches.push(event);
     await this.saveHistory(history);
   }
 
-  async addFormEvent(event: import('./types').FormEvent): Promise<void> {
+  async addFormEvent(event: import('@/types').FormEvent): Promise<void> {
     const history = await this.getHistory();
     history.forms.push(event);
     await this.saveHistory(history);

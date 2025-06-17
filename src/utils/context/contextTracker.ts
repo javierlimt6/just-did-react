@@ -1,6 +1,6 @@
 // contextTracker.ts - Main context tracking orchestrator
 
-import type { ContextTrackerConfig, ContextHistory, TrackerState } from './types';
+import type { ContextTrackerConfig, ContextHistory, TrackerState } from '../../types';
 import { ContextStorage } from './storage';
 import { NavigationTracker } from './navigationTracker';
 import { TabTracker } from './tabTracker';

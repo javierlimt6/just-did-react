@@ -1,6 +1,6 @@
 // contentTracker.ts - Content script for in-page activity monitoring
 
-import type { FormEvent } from './types';
+import type { FormEvent } from '../../types';
 
 export class ContentTracker {
   private isListening = false;
