@@ -2,14 +2,17 @@ import { useEffect, useState } from 'react'
 import { StopIcon } from '@heroicons/react/24/outline'
 import { useAppStore } from '@/store'
 import { HStack, IconButton, Progress } from '@chakra-ui/react'
+import { useContextHistory } from '@/utils/context/useContextHistory'
 
 const TimerView = () => {
   const { timerState, stopTimer, setCurrentView, sendChromeMessage, updateTimerRemaining } = useAppStore()
   const [timeRemaining, setTimeRemaining] = useState(0)
   const [isLoaded, setIsLoaded] = useState(false)
+  const { startTracking, clearHistory } = useContextHistory();
 
   useEffect(() => {
     let interval: NodeJS.Timeout
+    
 
     const updateTimer = async () => {
       try {
@@ -39,6 +42,7 @@ const TimerView = () => {
       updateTimer() // Initial update
       setIsLoaded(true)
       interval = setInterval(updateTimer, 1000)
+      startTracking();
     }
 
     startInterval()

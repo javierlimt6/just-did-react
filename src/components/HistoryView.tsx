@@ -309,8 +309,7 @@ const ActivityLogEntry: React.FC<{ log: ActivityLog }> = ({ log }) => {
           : log.task
         }
       </div>
-
-      {isExpanded && log.browserHistory && log.browserHistory.length > 0 && (
+      {/* {isExpanded && log.browserHistory && log.browserHistory.length > 0 && (
         <div className="mt-3 pt-3 border-t border-gray-100">
           <div className="text-xs text-gray-500 mb-2">Browser Activity:</div>
           <div className="space-y-1">
@@ -318,10 +317,10 @@ const ActivityLogEntry: React.FC<{ log: ActivityLog }> = ({ log }) => {
               <div key={index} className="text-xs text-gray-600 truncate">
                 <span className="font-medium">{item.domain}</span> - {item.title}
               </div>
-            ))}
-          </div>
+            ))} */}
+          {/* </div>
         </div>
-      )}
+      )} */}
     </div>
   )
 }
