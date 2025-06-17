@@ -1,6 +1,7 @@
 // Background service worker for JustDid extension
 import type { ChromeMessage, ChromeResponse, TimerState, BrowserHistoryItem } from '@/types'
 import { STORAGE_KEYS } from '@/types'
+import { getContextTracker } from '@/utils/context/contextTracker';
 
 let timerState: TimerState = {
   isRunning: false,
@@ -152,7 +153,14 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     });
     // Force open popup window
     chrome.action.openPopup().catch((e) => {
-      console.error('Error opening popup:', e);
+      console.log("Failed to open popup, creating new window:");
+      chrome.windows.create({
+        url: chrome.runtime.getURL('src/popup.html?view=taskEntry'),
+        type: 'popup',
+        focused: true,
+        width: 400,
+        height: 600
+      });
     });
   }
 })
