@@ -1,8 +1,7 @@
 // Background service worker for JustDid extension
 import type { ChromeMessage, ChromeResponse, TimerState, BrowserHistoryItem } from '@/types'
 import { STORAGE_KEYS } from '@/types'
-import { getContextTracker } from '@/utils/context/contextTracker';
-
+// import { getContextTracker } from '@/utils/context/contextTracker'
 let timerState: TimerState = {
   isRunning: false,
   startTime: null,
@@ -10,21 +9,25 @@ let timerState: TimerState = {
   alarmName: 'justDidTimer'
 }
 // const tracker = getContextTracker({
-//   enableNavigation: true,
-//   enableTabs: true,
-//   enableWindows: true,
-//   enableDownloads: true,
-//   enableSearches: true,
-//   enableForms: true,
-//   maxRecords: 10000,
-//   storageKey: 'contextHistory'
-// });
+//     enableNavigation: true,
+//     enableTabs: true,
+//     enableWindows: true,
+//     enableDownloads: true,
+//     enableSearches: true,
+//     enableForms: true,
+//     maxRecords: 10000,
+//     storageKey: 'contextHistory'
+//   });
 // tracker.start().catch(error => {
 //     console.error('Failed to start context tracker:', error);
 //   });
 // Initialize extension
 chrome.runtime.onInstalled.addListener(() => {
   console.log('JustDid extension installed')
+  // tracker.start().catch(error => {
+  //   console.error('Failed to start context tracker:', error);
+  // });
+
 
   // Initialize storage if needed
   chrome.storage.local.get([STORAGE_KEYS.ACTIVITY_LOGS, STORAGE_KEYS.TIMER_STATE], (result) => {
@@ -39,7 +42,24 @@ chrome.runtime.onInstalled.addListener(() => {
     }
   })
 })
-
+// chrome.runtime.onInstalled.addListener(() => {
+//   console.log('Extension installed - initializing context tracker');
+  
+//   const tracker = getContextTracker({
+//     enableNavigation: true,
+//     enableTabs: true,
+//     enableWindows: true,
+//     enableDownloads: true,
+//     enableSearches: true,
+//     enableForms: true,
+//     maxRecords: 10000,
+//     storageKey: 'contextHistory'
+//   });
+  
+//   tracker.start().catch(error => {
+//     console.error('Failed to start context tracker:', error);
+//   });
+// });
 // Handle messages from popup
 chrome.runtime.onMessage.addListener((
   message: ChromeMessage, 
@@ -122,26 +142,22 @@ function stopTimer(): void {
 function getTimerState(callback: (response: ChromeResponse) => void): void {
   chrome.storage.local.get([STORAGE_KEYS.TIMER_STATE], (result) => {
     const state = result[STORAGE_KEYS.TIMER_STATE] || timerState
+    
+    // Add debug logging
+    // console.log('Timer state from storage:', state);
 
-    if (state.isRunning && state.startTime) {
-      const elapsed = Date.now() - state.startTime
-      const remaining = Math.max(0, (state.duration * 60 * 1000) - elapsed)
-
-      callback({
-        success: true,
-        data: {
-          isRunning: state.isRunning,
-          remaining: remaining,
-          duration: state.duration
-        }
-      })
-    } else {
-      callback({ 
-        success: true, 
-        data: { isRunning: false } 
-      })
-    }
-  })
+    // Make sure we always include the data property
+    callback({
+      success: true,
+      data: {
+        isRunning: state.isRunning || false,
+        remaining: state.startTime 
+          ? Math.max(0, ((state.duration || 15) * 60 * 1000) - (Date.now() - state.startTime)) 
+          : 0,
+        duration: state.duration || 15
+      }
+    });
+  });
 }
 
 // Handle alarm triggers

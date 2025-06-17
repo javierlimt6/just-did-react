@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ClockIcon, DocumentTextIcon } from '@heroicons/react/24/outline'
 import { useAppStore } from '@/store'
 import { TIMER_CONSTRAINTS } from '@/types'
 import { Button, HStack, Field, NumberInput } from '@chakra-ui/react';
 import { ValueChangeDetails } from 'node_modules/@ark-ui/react/dist/components/number-input/number-input';
+// import { useContextHistory } from '@/utils/context/useContextHistory';
+
 
 const LandingView = () => {
   const startTimer = useAppStore(state => state.startTimer)
@@ -12,6 +14,29 @@ const LandingView = () => {
   const [duration, setDuration] = useState<number>(TIMER_CONSTRAINTS.DEFAULT_DURATION)
   const [isStarting, setIsStarting] = useState(false)
 
+//  const { startTracking, state: trackerState } = useContextHistory();
+
+  // // Initialize tracking when component mounts - but only once
+  // useEffect(() => {
+  //   // const initializeTracking = async () => {
+  //   //   try {
+  //   //     // Check if already tracking before starting
+  //   //     if (!trackerState.isTracking) {
+  //   //       console.log('Starting context tracking from LandingView');
+  //   //       await startTracking();
+  //   //     } else {
+  //   //       console.log('Context tracking already active:', trackerState);
+  //   //     }
+  //   //   } catch (error) {
+  //   //     console.error('Failed to initialize context tracking:', error);
+  //   //   }
+  //   // };
+
+  //   // initializeTracking();
+    
+  //   // No cleanup function that stops tracking
+  //   // We want tracking to continue running after component unmounts
+  // }, [startTracking, trackerState.isTracking]);
   const handleStartTimer = async () => {
     // Validate duration
     if (duration < TIMER_CONSTRAINTS.MIN_DURATION || duration > TIMER_CONSTRAINTS.MAX_DURATION) {
