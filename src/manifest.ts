@@ -14,6 +14,10 @@ export default defineManifest({
     'activeTab',
     'tabs',
     'scripting',
+    "downloads",
+    "webNavigation", 
+    "contextMenus",
+    "search" 
   ],
   "host_permissions": [
     "<all_urls>"

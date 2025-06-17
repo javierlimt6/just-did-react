@@ -12,7 +12,7 @@ import type {
   DownloadEvent,
   SearchQuery,
   FormEvent
-} from './types';
+} from '@/types';
 
 // Export all types
 export type {
