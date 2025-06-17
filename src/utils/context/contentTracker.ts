@@ -98,9 +98,14 @@ export class ContentTracker {
     const sensitiveTypes = ['password', 'email', 'tel', 'credit-card'];
     const sensitiveNames = ['password', 'email', 'phone', 'credit', 'card', 'ssn', 'social'];
 
-    return sensitiveTypes.includes(input.type.toLowerCase()) ||
-           sensitiveNames.some(name => input.name.toLowerCase().includes(name)) ||
-           sensitiveNames.some(name => input.id.toLowerCase().includes(name));
+    // Add null checks
+    const inputType = input?.type?.toLowerCase() || '';
+    const inputName = input?.name?.toLowerCase() || '';
+    const inputId = input?.id?.toLowerCase() || '';
+
+    return sensitiveTypes.includes(inputType) ||
+           sensitiveNames.some(name => inputName.includes(name)) ||
+           sensitiveNames.some(name => inputId.includes(name));
   }
 
   private isFormField(element: HTMLElement): boolean {
