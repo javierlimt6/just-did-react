@@ -8,7 +8,8 @@ import Confetti from "react-confetti";
 import { useAppStore } from "@/store";
 import type { BrowserHistoryItem } from "@/types";
 import { generateAISuggestion } from "@/utils/ai";
-import { Button, Field, HStack, Textarea } from "@chakra-ui/react";
+import { Button, Field, HStack, Textarea, VStack, Text } from "@chakra-ui/react";
+import { useContextHistory } from "@/utils/context/useContextHistory";
 
 
 const TaskEntryView = () => {
@@ -28,6 +29,7 @@ const TaskEntryView = () => {
     BrowserHistoryItem[]
   >([]);
   const [isGeneratingSuggestion, setIsGeneratingSuggestion] = useState(false);
+  const { startTracking, stopTracking, getRecentNavigation, getRecentTabs, getRecentDownloads, getSearchHistory, getFormActivity } = useContextHistory();
 
   useEffect(() => {
     // Load browser history when component mounts
@@ -41,15 +43,91 @@ const TaskEntryView = () => {
 
   const loadBrowserHistory = async () => {
     try {
-      console.log("Loading browser history...", timerState);
-      const response = await sendChromeMessage("getBrowserHistory", {
-        minutes: timerState.duration || 15,
-      });
-      console.log("Browser history response:", response);
-      if (response.success) {
-        setBrowserHistoryLocal(response.data);
-        setBrowserHistory(response.data);
-      }
+      console.log("Loading browser history...", timerState.duration);
+      const minutes = timerState.duration || 15;
+      const startTime = Date.now() - (minutes * 60 * 1000);
+      
+      // Fetch data from all available trackers
+      const [
+        navigationEvents,
+        tabEvents,
+        downloadEvents,
+        searchEvents,
+        formEvents
+      ] = await Promise.all([
+        getRecentNavigation(100),
+        getRecentTabs(100),
+        getRecentDownloads(50),
+        getSearchHistory(50),
+        getFormActivity(50)
+      ]);
+      
+      console.log(`Found ${navigationEvents.length} navigation events`);
+      console.log(`Found ${tabEvents.length} tab events`);
+      console.log(`Found ${downloadEvents.length} download events`);
+      console.log(`Found ${searchEvents.length} search events`);
+      console.log(`Found ${formEvents.length} form events`);
+      console.log(navigationEvents, tabEvents, downloadEvents, searchEvents, formEvents);
+      // Filter by time window
+      const filterByTime = events => events.filter(event => event.timestamp >= startTime);
+      
+      // Process and format each event type
+      const history = [
+        ...filterByTime(navigationEvents).map(event => ({
+          type: 'navigation',
+          title: event.title || 'Website Visit',
+          url: event.url,
+          timestamp: event.timestamp,
+          time: new Date(event.timestamp).toLocaleTimeString()
+        })).filter(event => !event.url.includes("chrome-extension")), // Filter out chrome extension URLs
+        
+        ...filterByTime(tabEvents).map(event => ({
+          type: 'tab',
+          title: event.title || `Tab ${event.type}`,
+          url: event.url,
+          timestamp: event.timestamp,
+          time: new Date(event.timestamp).toLocaleTimeString(),
+          details: `Tab ${event.type}`
+        })).filter(event => !event.url.includes("chrome-extension")),
+        
+        ...filterByTime(downloadEvents).map(event => ({
+          type: 'download',
+          title: event.filename || 'Download',
+          url: event.url,
+          timestamp: event.timestamp,
+          time: new Date(event.timestamp).toLocaleTimeString(),
+          details: `${event.state} (${formatBytes(event.bytesReceived)})`
+        })).filter(event => !event.url.includes("chrome-extension")),
+        
+        ...filterByTime(searchEvents).map(event => ({
+          type: 'search',
+          title: `Search: ${event.query}`,
+          url: event.url,
+          timestamp: event.timestamp,
+          time: new Date(event.timestamp).toLocaleTimeString(),
+          details: `on ${event.engine}`
+        })).filter(event => !event.url.includes("chrome-extension")),
+        
+        ...filterByTime(formEvents).map(event => ({
+          type: 'form',
+          title: `Form ${event.type}`,
+          url: event.url,
+          timestamp: event.timestamp,
+          time: new Date(event.timestamp).toLocaleTimeString()
+        })).filter(event => !event.url.includes("chrome-extension"))
+      ];
+      
+      // Sort by timestamp (newest first) and limit to reasonable amount
+      const sortedHistory = history
+        .sort((a, b) => b.timestamp - a.timestamp)
+        .slice(0, 20);
+
+      console.log("Sorted browser history:", sortedHistory);
+      
+      // Update state
+      setBrowserHistoryLocal(sortedHistory);
+      setBrowserHistory(sortedHistory);
+      
     } catch (error) {
       console.error("Error loading browser history:", error);
     }
@@ -184,19 +262,31 @@ const TaskEntryView = () => {
             <h3 className="font-semibold text-gray-700 mb-2 text-sm">
               Recent Browser History
             </h3>
-            <div className="space-y-2 max-h-32 overflow-y-auto">
-              {browserHistory.slice(0, 3).map((item, index) => (
-                <div key={index} className="text-xs text-gray-600 truncate">
-                  <span className="font-medium">{item.domain}</span> -{" "}
-                  {item.title}
-                </div>
+            <VStack>
+              {browserHistory.map((item, index) => (
+                <Text key={index}>
+                  {item.time}: {item.title}
+                </Text>
               ))}
-            </div>
+            </VStack>
           </div>
         )}
       </div>
     </div>
   );
+};
+
+// Helper function to format bytes
+const formatBytes = (bytes?: number) => {
+  if (!bytes) return 'Unknown size';
+  const units = ['B', 'KB', 'MB', 'GB'];
+  let size = bytes;
+  let unitIndex = 0;
+  while (size >= 1024 && unitIndex < units.length - 1) {
+    size /= 1024;
+    unitIndex++;
+  }
+  return `${size.toFixed(1)} ${units[unitIndex]}`;
 };
 
 export default TaskEntryView;
