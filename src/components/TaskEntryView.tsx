@@ -40,7 +40,7 @@ const TaskEntryView = () => {
 
   const loadBrowserHistory = async () => {
     try {
-      console.log("Loading browser history...", timerState.duration);
+      console.log("Loading browser history...", timerState);
       const response = await sendChromeMessage("getBrowserHistory", {
         minutes: timerState.duration || 15,
       });

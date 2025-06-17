@@ -175,6 +175,7 @@ async function getBrowserHistory(
   callback: (response: ChromeResponse) => void
 ): Promise<void> {
   try {
+    console.log('Fetching browser history for the last', minutes, 'minutes')
     const endTime = Date.now()
     const startTime = endTime - (minutes * 60 * 1000)
 
