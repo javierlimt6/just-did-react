@@ -23,10 +23,30 @@ function App() {
           return
         }
 
-        // Check current timer state
+        // Check current timer state with better error handling
         const response = await sendChromeMessage('getTimerState')
-        if (response.success && response.data.isRunning) {
-          setCurrentView('timer')
+        console.log('Timer state response:', response);
+
+        // First check if response exists
+        if (!response) {
+          console.error('No response received from getTimerState');
+          return;
+        }
+
+        // Then check for data property
+        if (!response.data) {
+          console.log('Response missing data property:', response);
+          // Provide a default value
+          response.data = { isRunning: false };
+        }
+
+        // Now safely check isRunning
+        if (response.success && typeof response.data.isRunning !== 'undefined') {
+          if (response.data.isRunning) {
+            setCurrentView('timer')
+          }
+        } else {
+          console.error('Invalid timer state response structure:', response);
         }
       } catch (error) {
         console.error('Error checking timer state:', error)
