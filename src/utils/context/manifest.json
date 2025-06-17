@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "Context History Tracker",
+  "version": "1.0.0",
+  "description": "Tracks browser activity and context for enhanced productivity",
+  "permissions": [
+    "tabs",
+    "history",
+    "storage",
+    "downloads",
+    "scripting",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["contentTracker.js"]
+    }
+  ],
+  "action": {
+    "default_title": "Context History Tracker",
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
