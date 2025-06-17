@@ -9,19 +9,19 @@ let timerState: TimerState = {
   duration: 15, // default 15 minutes
   alarmName: 'justDidTimer'
 }
-const tracker = getContextTracker({
-  enableNavigation: true,
-  enableTabs: true,
-  enableWindows: true,
-  enableDownloads: true,
-  enableSearches: true,
-  enableForms: true,
-  maxRecords: 10000,
-  storageKey: 'contextHistory'
-});
-tracker.start().catch(error => {
-    console.error('Failed to start context tracker:', error);
-  });
+// const tracker = getContextTracker({
+//   enableNavigation: true,
+//   enableTabs: true,
+//   enableWindows: true,
+//   enableDownloads: true,
+//   enableSearches: true,
+//   enableForms: true,
+//   maxRecords: 10000,
+//   storageKey: 'contextHistory'
+// });
+// tracker.start().catch(error => {
+//     console.error('Failed to start context tracker:', error);
+//   });
 // Initialize extension
 chrome.runtime.onInstalled.addListener(() => {
   console.log('JustDid extension installed')
