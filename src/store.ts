@@ -122,14 +122,21 @@ export const useAppStore = create<AppStore>()(
           }), false, 'setBrowserHistory'),
 
         // Chrome messaging
-        sendChromeMessage: async (action, data) => {
-          try {
-            const response = await chrome.runtime.sendMessage({ action, data })
-            return response
-          } catch (error) {
-            console.error('Chrome message error:', error)
-            throw error
-          }
+        sendChromeMessage: (action, data) => {
+          return new Promise((resolve, reject) => {
+            try {
+              chrome.runtime.sendMessage({ action, data }, (response) => {
+                if (chrome.runtime.lastError) {
+                  reject(chrome.runtime.lastError)
+                } else {
+                  resolve(response)
+                }
+              })
+            } catch (error) {
+              console.error('Chrome message error:', error)
+              reject(error)
+            }
+          })
         }
       }),
       {

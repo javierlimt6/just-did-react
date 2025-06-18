@@ -11,9 +11,17 @@ export default defineManifest({
     'notifications',
     'alarms',
     'history',
-    'activeTab'
+    'activeTab',
+    'tabs',
+    'scripting',
+    "downloads",
+    "webNavigation", 
+    "contextMenus",
+    "search" 
   ],
-
+  "host_permissions": [
+    "<all_urls>"
+  ],
   background: {
     service_worker: 'src/background/background.ts',
     type: 'module'

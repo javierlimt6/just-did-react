@@ -67,3 +67,77 @@ export const STORAGE_KEYS = {
   ACTIVITY_LOGS: 'logs',
   TIMER_COMPLETE: 'timerComplete'
 } as const
+
+export interface NavigationEvent {
+  url: string;
+  title: string;
+  timestamp: number;
+  transitionType?: string; // e.g., 'link', 'typed', 'auto_bookmark'
+  visitId?: string;
+}
+
+export interface TabEvent {
+  type: 'created' | 'updated' | 'activated' | 'removed';
+  tabId: number;
+  url?: string;
+  title?: string;
+  timestamp: number;
+  windowId?: number;
+}
+
+export interface WindowEvent {
+  type: 'created' | 'removed' | 'focused';
+  windowId: number;
+  timestamp: number;
+  tabIds?: number[];
+}
+
+export interface DownloadEvent {
+  id: number;
+  filename: string;
+  url: string;
+  timestamp: number;
+  state: string;
+  bytesReceived?: number;
+  totalBytes?: number;
+}
+
+export interface SearchQuery {
+  query: string;
+  engine: string;
+  url: string;
+  timestamp: number;
+}
+
+export interface FormEvent {
+  url: string;
+  timestamp: number;
+  formData?: Record<string, string>;
+  type: 'submit' | 'focus';
+}
+
+export interface ContextHistory {
+  navigation: NavigationEvent[];
+  tabs: TabEvent[];
+  windows: WindowEvent[];
+  downloads: DownloadEvent[];
+  searches: SearchQuery[];
+  forms: FormEvent[];
+}
+
+export interface ContextTrackerConfig {
+  enableNavigation?: boolean;
+  enableTabs?: boolean;
+  enableWindows?: boolean;
+  enableDownloads?: boolean;
+  enableSearches?: boolean;
+  enableForms?: boolean;
+  maxRecords?: number;
+  storageKey?: string;
+}
+
+export interface TrackerState {
+  isTracking: boolean;
+  lastUpdate: number;
+  totalEvents: number;
+}
