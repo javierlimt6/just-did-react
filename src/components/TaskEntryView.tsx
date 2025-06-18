@@ -247,17 +247,17 @@ const TaskEntryView = () => {
             <Field.Root>
               <HStack justifyContent="space-around" className="mb-2">
                 <Field.Label>Task Description</Field.Label>
-                <Button 
+                {/* <Button 
                   onClick={generateSuggestion}
                   disabled={isGeneratingSuggestion}
                   colorPalette="teal" variant="subtle">
                     <SparklesIcon /> {isGeneratingSuggestion ? "Thinking..." : "Suggest"}
-                </Button>
+                </Button> */}
               </HStack>
               <Textarea value={task}
                 onChange={(e) => setTask(e.target.value)}
                 disabled={isLoading}
-                placeholder="Click the button for AI suggestions"
+                // placeholder="Click the button for AI suggestions"
                 variant="outline"
               />
               <Field.HelperText>Use a few words</Field.HelperText>
