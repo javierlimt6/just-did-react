@@ -41,6 +41,26 @@ const TaskEntryView = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // const getBrowserHistory = (options = {}) => {
+  //   return new Promise((resolve, reject) => {
+  //     const queryOptions = {
+  //       text: '',                // Search text (empty returns all history)
+  //       startTime: Date.now() - (24 * 60 * 60 * 1000), // Last 24 hours
+  //       endTime: Date.now(),     // Now
+  //       maxResults: 100,         // Limit results
+  //       ...options               // Override with any provided options
+  //     };
+
+  //     chrome.history.search(queryOptions, (historyItems) => {
+  //       if (chrome.runtime.lastError) {
+  //         reject(chrome.runtime.lastError);
+  //       } else {
+  //         resolve(historyItems);
+  //       }
+  //     });
+  //   });
+  // };
+
   const loadBrowserHistory = async () => {
     try {
       console.log("Loading browser history...", timerState.duration);
@@ -62,6 +82,11 @@ const TaskEntryView = () => {
         getFormActivity(50)
       ]);
       
+
+      // const legacyHistory = await getBrowserHistory({ maxResults: 50 });
+      // console.log('Recent browser history:', legacyHistory);
+      // Process history data
+
       console.log(`Found ${navigationEvents.length} navigation events`);
       console.log(`Found ${tabEvents.length} tab events`);
       console.log(`Found ${downloadEvents.length} download events`);

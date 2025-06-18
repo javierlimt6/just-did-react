@@ -34,7 +34,8 @@ const TimerView = () => {
           }
         }
       } catch (error) {
-        console.error('Error updating timer:', error)
+        setCurrentView('landing')
+        // console.error('Error updating timer:', error)
       }
     }
 
